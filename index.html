@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>متعلم الإنجليزية</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 480px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .audio-controls {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .audio-btn {
+            background: #3498db;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: background 0.3s;
+            font-size: 14px;
+        }
+        
+        .audio-btn:hover {
+            background: #2980b9;
+        }
+        
+        .english-word {
+            background: #f8f9fa;
+            padding: 30px 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border: 3px solid #3498db;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        .english-word h2 {
+            font-size: 32px;
+            color: #000000;
+            font-weight: bold;
+            margin: 0;
+            text-align: center;
+        }
+        
+        .speaker-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background 0.3s;
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .speaker-btn:hover {
+            background: #ecf0f1;
+        }
+        
+        .speaker-btn.speaking {
+            color: #e74c3c;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: translateY(-50%) scale(1); }
+            50% { transform: translateY(-50%) scale(1.1); }
+            100% { transform: translateY(-50%) scale(1); }
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .option-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .option-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .option-btn.correct {
+            background: #27ae60;
+        }
+        
+        .option-btn.wrong {
+            background: #e74c3c;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .control-btn {
+            background: #9b59b6;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .control-btn:hover:not(:disabled) {
+            background: #8e44ad;
+        }
+        
+        .control-btn.exit-btn {
+            background: #e74c3c;
+        }
+        
+        .control-btn.exit-btn:hover {
+            background: #c0392b;
+        }
+        
+        .control-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .stats {
+            margin-top: 15px;
+            padding: 12px;
+            background: #ecf0f1;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        .add-words-section {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 2px solid #3498db;
+        }
+
+        .add-words-section h3 {
+            margin-bottom: 10px;
+            text-align: center;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+
+        .add-words-section textarea {
+            width: 100%;
+            height: 120px;
+            padding: 8px;
+            border: 2px solid #bdc3c7;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-bottom: 8px;
+            resize: vertical;
+        }
+
+        .add-words-section button {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            width: 100%;
+        }
+
+        .add-words-section button:hover {
+            background: #219a52;
+        }
+
+        .message {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .message.correct {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.wrong {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .session-stats {
+            background: #34495e;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .session-stats h3 {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .session-stats p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #ecf0f1;
+            border-radius: 10px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: #27ae60;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 متعلم الإنجليزية</h1>
+            <p>اختر الترجمة الصحيحة للكلمة</p>
+        </div>
+
+        <!-- عناصر التحكم في الصوت -->
+        <div class="audio-controls">
+            <button class="audio-btn" onclick="toggleAutoSpeak()">
+                <span id="autoSpeakIcon">🔊</span>
+            </button>
+        </div>
+
+        <!-- رسالة التغذية الراجعة -->
+        <div id="message" class="message" style="display: none;"></div>
+
+        <!-- الكلمة الإنجليزية -->
+        <div class="english-word">
+            <h2 id="englishWord">Book</h2>
+            <button class="speaker-btn" onclick="speakCurrentWord()">🔊</button>
+        </div>
+
+        <!-- خيارات الترجمة -->
+        <div class="options">
+            <button class="option-btn" onclick="checkAnswer(0)">كتاب</button>
+            <button class="option-btn" onclick="checkAnswer(1)">قلم</button>
+            <button class="option-btn" onclick="checkAnswer(2)">مدرسة</button>
+        </div>
+
+        <!-- أزرار التحكم -->
+        <div class="controls">
+            <button class="control-btn" onclick="toggleAddWords()">إضافة كلمات</button>
+            <button class="control-btn" onclick="skipWord()" style="background: #e67e22;">تخطي</button>
+            <button class="control-btn exit-btn" onclick="showSessionStats()">خروج</button>
+        </div>
+
+        <!-- الإحصائيات -->
+        <div class="stats" id="stats">
+            الكلمات: 6 | الإجابات الصحيحة: 0
+        </div>
+
+        <!-- قسم إضافة الكلمات -->
+        <div id="addWordsPanel" class="add-words-section" style="display: none;">
+            <h3>إضافة كلمات جديدة</h3>
+            <textarea id="wordsTextarea" placeholder="الصيغة: english=عربي
+مثال:
+book=كتاب
+water=ماء
+computer=حاسوب
+
+يمكنك لصق قائمة كاملة من الكلمات هنا..."></textarea>
+            <button onclick="addMultipleWords()">إضافة الكلمات</button>
+            <div style="margin-top: 10px; text-align: center;">
+                <button class="control-btn" onclick="addDefaultWords()" style="background: #e67e22;">إضافة 1000 كلمة افتراضية</button>
+            </div>
+        </div>
+
+        <!-- إحصائيات الجلسة -->
+        <div id="sessionStats" class="session-stats" style="display: none;">
+            <h3>📊 إحصائيات الجلسة</h3>
+            <p id="sessionInfo">تم الإجابة على 0 كلمة</p>
+            <p id="sessionCorrect">الإجابات الصحيحة: 0</p>
+            <p id="sessionPercentage">النسبة: 0%</p>
+            <div class="progress-bar">
+                <div id="progressFill" class="progress" style="width: 0%"></div>
+            </div>
+            <button class="control-btn" onclick="hideSessionStats()" style="background: #3498db; margin-top: 10px;">استمرار</button>
+            <button class="control-btn exit-btn" onclick="resetSession()" style="margin-top: 5px;">جلسة جديدة</button>
+        </div>
+    </div>
+
+    <script>
+        // خدمة Text-to-Speech
+        class TTSService {
+            constructor() {
+                this.synth = window.speechSynthesis;
+                this.voices = [];
+                this.selectedVoice = null;
+                this.isSupported = false;
+                this.isInitialized = false;
+                this.rate = 1.0;
+                this.pitch = 1.0;
+                this.volume = 1.0;
+                
+                this.init();
+            }
+
+            init() {
+                if (!this.synth) {
+                    console.warn('Text-to-Speech غير مدعوم في هذا المتصفح');
+                    return;
+                }
+
+                this.isSupported = true;
+                this.loadVoices();
+                
+                this.synth.onvoiceschanged = () => {
+                    this.loadVoices();
+                };
+            }
+
+            loadVoices() {
+                this.voices = this.synth.getVoices();
+                
+                // اختيار صوت إنجليزي
+                this.selectedVoice = this.voices.find(voice => 
+                    voice.lang.includes('en-US')
+                ) || this.voices.find(voice => 
+                    voice.lang.includes('en')
+                ) || this.voices[0];
+                
+                this.isInitialized = true;
+            }
+
+            speak(text) {
+                if (!this.isSupported || !this.isInitialized) {
+                    return false;
+                }
+
+                this.stop();
+
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.voice = this.selectedVoice;
+                utterance.rate = this.rate;
+                utterance.pitch = this.pitch;
+                utterance.volume = this.volume;
+
+                utterance.onstart = () => {
+                    document.querySelector('.speaker-btn').classList.add('speaking');
+                };
+
+                utterance.onend = () => {
+                    document.querySelector('.speaker-btn').classList.remove('speaking');
+                };
+
+                utterance.onerror = () => {
+                    document.querySelector('.speaker-btn').classList.remove('speaking');
+                };
+
+                this.synth.speak(utterance);
+                return true;
+            }
+
+            stop() {
+                if (this.isSupported) {
+                    this.synth.cancel();
+                }
+            }
+
+            setRate(rate) {
+                this.rate = rate;
+            }
+
+            setPitch(pitch) {
+                this.pitch = pitch;
+            }
+
+            isSpeaking() {
+                return this.isSupported ? this.synth.speaking : false;
+            }
+        }
+
+        // إنشاء الخدمة
+        const ttsService = new TTSService();
+
+        // قائمة الكلمات الافتراضية
+        let words = [
+            { english: "Book", correct: "كتاب", wrong1: "قلم", wrong2: "مدرسة" },
+            { english: "She", correct: "هي", wrong1: "هو", wrong2: "هم" },
+            { english: "Red", correct: "أحمر", wrong1: "أزرق", wrong2: "أخضر" },
+            { english: "House", correct: "منزل", wrong1: "سيارة", wrong2: "شجرة" },
+            { english: "Water", correct: "ماء", wrong1: "نار", wrong2: "هواء" },
+            { english: "Cat", correct: "قطة", wrong1: "كلب", wrong2: "طائر" }
+        ];
+
+        let usedIndices = [];
+        let correctAnswers = 0;
+        let autoSpeak = true;
+        let currentWord = null;
+        
+        // إحصائيات الجلسة
+        let sessionAnswers = 0;
+        let sessionCorrect = 0;
+
+        // التهيئة
+        function init() {
+            loadWords();
+            showRandomWord();
+            updateStats();
+        }
+
+        // تحميل الكلمات
+        function loadWords() {
+            const savedWords = localStorage.getItem('englishWords');
+            if (savedWords) {
+                words = JSON.parse(savedWords);
+            }
+            const savedScore = localStorage.getItem('correctAnswers');
+            if (savedScore) {
+                correctAnswers = parseInt(savedScore);
+            }
+        }
+
+        // حفظ الكلمات
+        function saveWords() {
+            localStorage.setItem('englishWords', JSON.stringify(words));
+            localStorage.setItem('correctAnswers', correctAnswers.toString());
+        }
+
+        // عرض كلمة عشوائية
+        function showRandomWord() {
+            // إذا استخدمنا جميع الكلمات، نعيد تعيين القائمة
+            if (usedIndices.length >= words.length) {
+                usedIndices = [];
+            }
+
+            // اختيار كلمة عشوائية لم تستخدم بعد
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * words.length);
+            } while (usedIndices.includes(randomIndex));
+
+            usedIndices.push(randomIndex);
+            currentWord = words[randomIndex];
+            
+            displayWord(currentWord);
+        }
+
+        // عرض الكلمة مع الخيارات
+        function displayWord(word) {
+            document.getElementById('englishWord').textContent = word.english;
+            
+            const options = document.querySelectorAll('.option-btn');
+            const allOptions = [word.correct, word.wrong1, word.wrong2];
+            
+            // خلط الخيارات
+            for (let i = allOptions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [allOptions[i], allOptions[j]] = [allOptions[j], allOptions[i]];
+            }
+            
+            options.forEach((btn, index) => {
+                btn.textContent = allOptions[index];
+                btn.className = 'option-btn';
+                btn.disabled = false;
+            });
+            
+            // إخفاء الرسالة
+            document.getElementById('message').style.display = 'none';
+            
+            // نطق الكلمة تلقائياً عند الظهور فقط
+            if (autoSpeak) {
+                setTimeout(() => {
+                    speakCurrentWord();
+                }, 300);
+            }
+        }
+
+        // نطق الكلمة الحالية
+        function speakCurrentWord() {
+            const currentWordText = document.getElementById('englishWord').textContent;
+            ttsService.speak(currentWordText);
+        }
+
+        // التحقق من الإجابة
+        function checkAnswer(selectedIndex) {
+            const options = document.querySelectorAll('.option-btn');
+            const selectedText = options[selectedIndex].textContent;
+            const messageElement = document.getElementById('message');
+            
+            // تحديث إحصائيات الجلسة
+            sessionAnswers++;
+            
+            if (selectedText === currentWord.correct) {
+                // الإجابة الصحيحة
+                options.forEach(btn => {
+                    btn.disabled = true;
+                    if (btn.textContent === currentWord.correct) {
+                        btn.classList.add('correct');
+                    }
+                });
+                
+                correctAnswers++;
+                sessionCorrect++;
+                saveWords();
+                updateStats();
+                
+                // عرض رسالة النجاح
+                messageElement.textContent = 'إجابة صحيحة! ✓';
+                messageElement.className = 'message correct';
+                messageElement.style.display = 'block';
+                
+                // الانتقال لكلمة جديدة بعد 0.8 ثانية
+                setTimeout(() => {
+                    showRandomWord();
+                }, 800);
+                
+            } else {
+                // الإجابة الخاطئة - إعادة نفس الكلمة بخيارات جديدة
+                options.forEach(btn => {
+                    if (btn.textContent === selectedText) {
+                        btn.classList.add('wrong');
+                    }
+                });
+                
+                // عرض رسالة الخطأ
+                messageElement.textContent = 'إجابة خاطئة! جرب مرة أخرى';
+                messageElement.className = 'message wrong';
+                messageElement.style.display = 'block';
+                
+                // إعادة نفس الكلمة بعد ثانية واحدة بخيارات جديدة
+                setTimeout(() => {
+                    displayWord(currentWord);
+                }, 1000);
+            }
+        }
+
+        // تخطي الكلمة الحالية
+        function skipWord() {
+            showRandomWord();
+        }
+
+        // تبديل النطق التلقائي
+        function toggleAutoSpeak() {
+            autoSpeak = !autoSpeak;
+            const icon = document.getElementById('autoSpeakIcon');
+            
+            if (autoSpeak) {
+                icon.textContent = '🔊';
+            } else {
+                icon.textContent = '🔇';
+            }
+        }
+
+        // تحديث الإحصائيات
+        function updateStats() {
+            document.getElementById('stats').textContent = 
+                `الكلمات: ${words.length} | الإجابات الصحيحة: ${correctAnswers}`;
+        }
+
+        // إظهار/إخفاء إضافة الكلمات
+        function toggleAddWords() {
+            const panel = document.getElementById('addWordsPanel');
+            const sessionPanel = document.getElementById('sessionStats');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+            sessionPanel.style.display = 'none';
+        }
+
+        // إظهار إحصائيات الجلسة
+        function showSessionStats() {
+            const panel = document.getElementById('sessionStats');
+            const addPanel = document.getElementById('addWordsPanel');
+            panel.style.display = 'block';
+            addPanel.style.display = 'none';
+            
+            const percentage = sessionAnswers > 0 ? Math.round((sessionCorrect / sessionAnswers) * 100) : 0;
+            
+            document.getElementById('sessionInfo').textContent = `تم الإجابة على ${sessionAnswers} كلمة`;
+            document.getElementById('sessionCorrect').textContent = `الإجابات الصحيحة: ${sessionCorrect}`;
+            document.getElementById('sessionPercentage').textContent = `النسبة: ${percentage}%`;
+            document.getElementById('progressFill').style.width = `${percentage}%`;
+        }
+
+        // إخفاء إحصائيات الجلسة
+        function hideSessionStats() {
+            document.getElementById('sessionStats').style.display = 'none';
+        }
+
+        // بدء جلسة جديدة
+        function resetSession() {
+            sessionAnswers = 0;
+            sessionCorrect = 0;
+            hideSessionStats();
+        }
+
+        // إضافة كلمات متعددة
+        function addMultipleWords() {
+            const textarea = document.getElementById('wordsTextarea');
+            const lines = textarea.value.split('\n');
+            let addedCount = 0;
+
+            lines.forEach(line => {
+                line = line.trim();
+                if (line && line.includes('=')) {
+                    const [english, arabic] = line.split('=').map(part => part.trim());
+                    if (english && arabic) {
+                        // إنشاء ترجمات خاطئة عشوائية
+                        const wrongTranslations = generateWrongTranslations(arabic);
+                        
+                        // التحقق من عدم وجود الكلمة مسبقاً
+                        const exists = words.some(w => w.english.toLowerCase() === english.toLowerCase());
+                        if (!exists) {
+                            words.push({
+                                english: english,
+                                correct: arabic,
+                                wrong1: wrongTranslations[0],
+                                wrong2: wrongTranslations[1]
+                            });
+                            addedCount++;
+                        }
+                    }
+                }
+            });
+
+            if (addedCount > 0) {
+                saveWords();
+                updateStats();
+                alert(`تمت إضافة ${addedCount} كلمة جديدة بنجاح!`);
+                textarea.value = '';
+                document.getElementById('addWordsPanel').style.display = 'none';
+            } else {
+                alert('لم يتم إضافة أي كلمات. تأكد من صيغة الكلمات (english=عربي)');
+            }
+        }
+
+        // إنشاء ترجمات خاطئة عشوائية
+        function generateWrongTranslations(correctTranslation) {
+            const commonWords = [
+                'كبير', 'صغير', 'سريع', 'بطيء', 'قديم', 'جديد', 'بعيد', 'قريب', 
+                'سهل', 'صعب', 'طويل', 'قصير', 'ثقيل', 'خفيف', 'قاس', 'لين'
+            ];
+            const wrongs = [];
+            
+            while (wrongs.length < 2) {
+                const randomWord = commonWords[Math.floor(Math.random() * commonWords.length)];
+                if (randomWord !== correctTranslation && !wrongs.includes(randomWord)) {
+                    wrongs.push(randomWord);
+                }
+            }
+            
+            return wrongs;
+        }
+
+        // إضافة الكلمات الافتراضية (1000 كلمة)
+        function addDefaultWords() {
+            const defaultWords = [
+                "the=ال", "of=من", "to=إلى", "and=و", "a=أ", "in=في", "is=يكون", "it=هو", "you=أنت",
+                "that=ذلك", "he=هو", "was=كان", "for=ل", "on=على", "are=يكون", "with=مع", "as=ك",
+                "I=أنا", "his=له", "they=هم", "be=يكون", "at=في", "one=واحد", "have=يملك", "this=هذا",
+                "from=من", "by=بواسطة", "word=كلمة", "but=لكن", "what=ما", "some=بعض", "time=وقت",
+                "number=رقم", "people=ناس", "water=ماء", "day=يوم", "part=جزء", "sound=صوت", "work=عمل",
+                "place=مكان", "year=سنة", "back=خلف", "thing=شيء", "name=اسم", "sentence=جملة", "man=رجل",
+                "line=خط", "boy=ولد", "life=حياة", "end=نهاية", "house=منزل", "picture=صورة", "try=يحاول",
+                "us=نا", "again=مرة أخرى", "animal=حيوان", "point=نقطة", "mother=أم", "world=عالم",
+                "computer=حاسوب", "laptop=حاسوب محمول", "desktop=حاسوب مكتبي", "server=خادم", "device=جهاز",
+                "hardware=عتاد", "software=برمجيات", "application=تطبيق", "program=برنامج", "system=نظام",
+                "network=شبكة", "internet=إنترنت", "website=موقع ويب", "browser=متصفح", "email=بريد إلكتروني",
+                "phone=هاتف", "mobile=متحرك", "smartphone=هاتف ذكي", "tablet=لوحي", "camera=كاميرا",
+                "screen=شاشة", "keyboard=لوحة مفاتيح", "mouse=فأرة", "printer=طابعة", "memory=ذاكرة",
+                "storage=تخزين", "file=ملف", "folder=مجلد", "data=بيانات", "information=معلومات"
+            ];
+
+            let addedCount = 0;
+            defaultWords.forEach(wordPair => {
+                if (wordPair.includes('=')) {
+                    const [english, arabic] = wordPair.split('=').map(part => part.trim());
+                    if (english && arabic) {
+                        // التحقق من عدم وجود الكلمة مسبقاً
+                        const exists = words.some(w => w.english.toLowerCase() === english.toLowerCase());
+                        if (!exists) {
+                            const wrongTranslations = generateWrongTranslations(arabic);
+                            words.push({
+                                english: english,
+                                correct: arabic,
+                                wrong1: wrongTranslations[0],
+                                wrong2: wrongTranslations[1]
+                            });
+                            addedCount++;
+                        }
+                    }
+                }
+            });
+
+            saveWords();
+            updateStats();
+            alert(`تمت إضافة ${addedCount} كلمة افتراضية بنجاح!`);
+            document.getElementById('addWordsPanel').style.display = 'none';
+        }
+
+        // بدء التطبيق
+        window.onload = init;
+    </script>
+</body>
+</html>
